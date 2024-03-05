@@ -8,6 +8,8 @@ import earthClouds from "./assets/earthclouds.png";
 import moonTexture from "./assets/moon_1k.jpg";
 import moonDisTexture from "./assets/moon-dis.jpg";
 import CreateSolarSystem from "./space/SolarSystem.jsx";
+import asteroidTexture from "./assets/asteroid_texture.jpg";
+
 import { AdditiveBlending, BackSide, DoubleSide, Group } from "three";
 import { frag, vert } from "./shaders/AtmosphereShader";
 
@@ -36,6 +38,7 @@ const Scene = () => {
   const clouds = useTexture(earthClouds);
   const moon = useTexture(moonTexture);
   const moonDis = useTexture(moonDisTexture);
+  const asteroid = useTexture(asteroidTexture);
 
   return (
     <>
@@ -90,7 +93,7 @@ const Scene = () => {
       <directionalLight castShadow position={[-2, 0, 30]} shadow-mapSize={[1024, 1024]} color="#FFF" intensity={params.sunIntensity}>
         <orthographicCamera attach="shadow-camera" args={[-50, 10, 10, -10]} />
       </directionalLight>
-
+      <Neo asteroidTexture={asteroid} earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
       <CreateSolarSystem earthSize={params.earthSize.value}  astronomicalConversion={params.astronomicalConversion.value}/>
     </>
   );
@@ -98,11 +101,9 @@ const Scene = () => {
 
 const App = () => {
   return (
-    <>
-      <Neo/>
-    
+    <>     
       <Canvas camera={{ fov: 40, position: [45, -10, 20] }} style={{ background: "black" }}>
-        <OrbitControls maxPolarAngle={Math.PI / 2} />
+        <OrbitControls maxPolarAngle={Math.PI / 2} enablePan={true} />
         <Scene />
       </Canvas>
       </>
