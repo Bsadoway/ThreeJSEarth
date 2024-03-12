@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import Neo from './space/Neo.jsx';
 import { Canvas, useFrame, extend } from "@react-three/fiber";
-import { OrbitControls, Sphere, useTexture, Stars, shaderMaterial } from "@react-three/drei";
-import earthTexture from './assets/earthmap4k.jpg';
-import earthBump from "./assets/earthbump4k.jpg";
-import earthClouds from "./assets/earthclouds.png";
-import moonTexture from "./assets/moon_1k.jpg";
-import moonDisTexture from "./assets/moon-dis.jpg";
+import { OrbitControls, Sphere, useTexture, Stars, shaderMaterial, OrthographicCamera, PerspectiveCamera, Loader } from "@react-three/drei";
+import earthTexture from './assets/textures/earthmap4k.jpg';
+import earthBump from "./assets/textures/earthbump4k.jpg";
+import earthClouds from "./assets/textures/earthclouds.png";
+import moonTexture from "./assets/textures/moon_1k.jpg";
+import moonDisTexture from "./assets/textures/moon-dis.jpg";
 import CreateSolarSystem from "./space/SolarSystem.jsx";
-import asteroidTexture from "./assets/asteroid_texture.jpg";
+import asteroidTexture from "./assets/textures/asteroid_texture.jpg";
 
 import { AdditiveBlending, BackSide, DoubleSide, Group } from "three";
 import { frag, vert } from "./shaders/AtmosphereShader";
@@ -39,6 +39,7 @@ const Scene = () => {
   const moon = useTexture(moonTexture);
   const moonDis = useTexture(moonDisTexture);
   const asteroid = useTexture(asteroidTexture);
+  
 
   return (
     <>
@@ -69,7 +70,7 @@ const Scene = () => {
       </group>
 
       <Stars
-        radius={180}   
+        radius={200}   
         depth={10}   
         count={12000}
         factor={4}
@@ -94,7 +95,7 @@ const Scene = () => {
         <orthographicCamera attach="shadow-camera" args={[-50, 10, 10, -10]} />
       </directionalLight>
       <Neo asteroidTexture={asteroid} earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
-      <CreateSolarSystem earthSize={params.earthSize.value}  astronomicalConversion={params.astronomicalConversion.value}/>
+      <CreateSolarSystem earthSize={params.earthSize.value}  astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
     </>
   );
 };
@@ -102,10 +103,15 @@ const Scene = () => {
 const App = () => {
   return (
     <>     
-      <Canvas camera={{ fov: 40, position: [45, -10, 20] }} style={{ background: "black" }}>
-        <OrbitControls maxPolarAngle={Math.PI / 2} enablePan={true} />
+      <Canvas camera={{ fov: 40, position: [-45, 10, 20] }} style={{ background: "black" }}>
+        <OrbitControls maxPolarAngle={Math.PI / 2} enablePan={false} pan maxDistance={200} minDistance={20} min/>
+        <PerspectiveCamera zoom={2} ></PerspectiveCamera>
         <Scene />
       </Canvas>
+      <Loader 
+      dataInterpolation={(p) => `Loading ${p.toFixed(2)}%`} // Text
+      initialState={(active) => active} // Initial black out state
+      />
       </>
   );
 };

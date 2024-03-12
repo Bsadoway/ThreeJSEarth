@@ -1,6 +1,6 @@
 import React from 'react';
 import data from '../data/NeoData.json';
-import RandomizedDodecahedron from './Asteroid';
+import Asteroid from './Asteroid';
 
 class Neo extends React.Component {
 
@@ -29,7 +29,7 @@ class Neo extends React.Component {
         return (
             this.state.neos.map((neo) => (
                 <group key={neo.id}>
-                    <RandomizedDodecahedron 
+                    <Asteroid 
                         name={neo.name} 
                         astronomicalConversion={this.props.astronomicalConversion} 
                         closeApproachAU={neo.close_approach_data[0].miss_distance.astronomical} 
