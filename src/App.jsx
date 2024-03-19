@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Neo from './space/Neo.jsx';
+import Neos from './space/Neos.jsx';
 import { Canvas, useFrame, extend } from "@react-three/fiber";
 import { OrbitControls, Sphere, useTexture, Stars, shaderMaterial, OrthographicCamera, PerspectiveCamera, Loader } from "@react-three/drei";
 import earthTexture from './assets/textures/earthmap4k.jpg';
@@ -94,7 +94,7 @@ const Scene = () => {
       <directionalLight castShadow position={[-2, 0, 30]} shadow-mapSize={[1024, 1024]} color="#FFF" intensity={params.sunIntensity}>
         <orthographicCamera attach="shadow-camera" args={[-50, 10, 10, -10]} />
       </directionalLight>
-      <Neo asteroidTexture={asteroid} earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
+      <Neos asteroidTexture={asteroid} earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
       <CreateSolarSystem earthSize={params.earthSize.value}  astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
     </>
   );
