@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Sphere,Center, Text3D, } from '@react-three/drei';
-import { Html } from '@react-three/drei';
+import { Sphere, Center, Text3D, Html } from '@react-three/drei';
+import Asteroid from './Asteroid';
 
-const NEO = (props) => {
+const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
     const [neos, setNEOs] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
 
@@ -19,37 +19,27 @@ const NEO = (props) => {
         fetchData();
     }, []);
 
-    const handleClick = (id) => {
+
+    const handleClick = (e, id) => {
+        e.stopPropagation();
         setSelectedId(id === selectedId ? null : id);
     };
 
+    const getDataForId = (id) => {
+        return neos.find((asteroid) => asteroid.id === id);
+    };
+    
     return (
         <>
             {neos.map((neo) => (
-                <group key={neo.id} position={[0, 20, props.astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical]}>
-                    <Sphere
+                <group key={neo.id} position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical]}>
+                    <Asteroid
+                        key={neo.id}
+                        id={neo.id}
                         args={[neo.estimated_diameter.kilometers.estimated_diameter_max * 4, 32, 32]}
-                        onClick={() => handleClick(neo.id)}
-                        onPointerOver={(e) => {
-                            e.object.material.opacity = 0.7;
-                            document.body.style.cursor = 'pointer'; // Change cursor to pointer
-                        }}
-                        onPointerOut={(e) => {
-                            e.object.material.opacity = 0.5;
-                            document.body.style.cursor = 'auto'; // Reset cursor to default
-                        }}
-                        // onPointerMissed={(e) => {
-                        //     e.object.material.opacity = 0.5;
-                        //     document.body.style.cursor = 'auto'; // Reset cursor to default
-                        // }}
-                        onPointerMove={(e) => {
-                            if (e.object.material.opacity !== 0.7) {
-                                e.object.material.opacity = 0.5;
-                            }
-                        }}
+                        data={neo}
                     >
-                        <meshBasicMaterial color={selectedId === neo.id ? 'yellow' : 'red'} transparent opacity={0.5} />
-                    </Sphere>
+                    </Asteroid>
                     <Center position={[0, 4, 0]} rotateX={90}>
                         <Text3D
                             height={0.5}
@@ -60,22 +50,12 @@ const NEO = (props) => {
                             {neo.name.replace(/[()]/g, "")}
                         </Text3D>
                     </Center>
-
-                    {selectedId === neo.id && (
-                        <Html
-                            style={{ position: 'absolute', top: 0, left: 0, padding: '10px', color: 'white', background: 'rgba(0, 0, 0, 0.5)', transform: 'unset' }}
-                        >
-                            <div>
-                                Size: {neo.estimated_diameter.kilometers.estimated_diameter_max} km
-                                <br />
-                                Close Approach Distance: {neo.close_approach_data[0].miss_distance.astronomical} AU
-                            </div>
-                        </Html>
-                    )}
                 </group>
             ))}
+ 
         </>
     );
-};
+});
 
 export default NEO;
+

@@ -1,69 +1,82 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from "react";
 import { useFrame } from '@react-three/fiber';
-import { Center, Text3D, useFBX, useTexture, Sphere } from '@react-three/drei';
-import { MeshBasicMaterial,SphereGeometry } from 'three';
-import asteroidTexture from "../assets/textures/asteroid_texture.jpg";
+import * as THREE from 'three';
+import openSimplexNoise from 'https://cdn.skypack.dev/open-simplex-noise';
+import { Html } from "@react-three/drei";
+import AsteroidDetails from "./AsteroidDetails";
 
-const Asteroid = (props) => {
-  const asteroidRef = useRef();
-  const asteroid = useTexture(asteroidTexture);
-  let fbx = useFBX('./src/assets/Rock01.fbx');
-  let fbx2 = useFBX('./src/assets/Rock02.fbx');
-  const asteroidScale = .05; // 5% of the scale of the FBX file
-  const [hovered, setHovered] = useState(false);
+const Asteroid = React.memo(({ id, position, data, isSelected }) => {
+  const asteroidGeo = new THREE.DodecahedronGeometry(4, 2);
+  const meshRef = useRef(asteroidGeo);
+  const detailsRef = useRef();
 
   useFrame(() => {
-    if (asteroidRef.current) {
-      asteroidRef.current.rotation.z += 0.01;
+    if (meshRef.current) {
+      meshRef.current.rotation.x += 0.002 * Math.random();
+      meshRef.current.rotation.y += 0.002 * Math.random();
+      meshRef.current.rotation.z -= 0.002 * Math.random();
     }
   });
 
-  useEffect(() => {
-    document.body.style.cursor = hovered ? 'pointer' : 'auto'
-    return () => document.body.style.cursor = 'auto';
-  }, [hovered])
+  const vec = new THREE.Vector3();
+  const pos = asteroidGeo.attributes.position;
+  const noise3d = openSimplexNoise.makeNoise3D(Math.random() * 100);
 
-  // const model = Math.floor(Math.random() * 2 + 1) === 1 ? fbx : fbx2;
-  // model.traverse(child => {
-  //   if (child.isMesh) {
-  //     child.material.map = asteroid;
-  //     child.material.emissive.set(0xcccccc); 
-  //     child.material.emissiveIntensity = .05;  // Increase intensity for a brighter effect
-  //   }
-  // });
+  for (let i = 0; i < pos.count; i++) {
+    vec
+      .fromBufferAttribute(pos, i)
+      .normalize();
+    vec
+      .copy(vec)
+      .multiplyScalar(1)
+      .addScaledVector(vec, noise3d(vec.x, vec.y, vec.z));
+
+    pos.setXYZ(i, vec.x, vec.y, vec.z);
+  }
+
+  asteroidGeo.computeVertexNormals();
+  pos.needsUpdate = true;
+
+  const toggleVisibility = () => {
+    if (detailsRef.current.style.display === "none") {
+      detailsRef.current.style.display = "block";
+    } else {
+      detailsRef.current.style.display = "none";
+    }
+  };
 
   return (
-    <group position={[0, 20, props.astronomicalConversion * props.closeApproachAU]}>
-      <Sphere 
-          // geometry={new SphereGeometry(1, 16, 16)}
-
-        // object={model.clone()}
-        args={[props.diameter * 4, 0, 1]} 
-        rotation={[Math.random() * 10, Math.random() * 10,Math.random() * 10]}
-        ref={asteroidRef}
-        scale={ [ props.diameter * asteroidScale, props.diameter * asteroidScale, props.diameter * asteroidScale]}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        onClick={() => console.log('Asteroid clicked')}
-      />
-      <Center position={[0, 4, 0]} rotateX={90}>
-        <Text3D
-          height={0.5}
-          size={1}
-          rotation={[0, -90, 0]}
-          font="./Space Age_Regular.json"
-        >
-          {props.name.replace(/[()]/g, "")}
-        </Text3D>
-      </Center>
-      {hovered && (
-        <mesh position={[0, 0, 0]} scale={[2, 2, 2]}>
-         <sphere args={[1, 8, 8]} />
-         <meshBasicMaterial color="yellow" transparent opacity={0.5} />
-       </mesh>
-      )}
+    <group>
+      <mesh
+        ref={meshRef}
+        geometry={asteroidGeo}
+        position={position}
+        onClick={toggleVisibility}
+        onPointerOver={(e) => {
+          if (meshRef.current) {
+            meshRef.current.material.color.set(0xfff000);
+            meshRef.current.material.emissive.set(0xff0000);
+            meshRef.current.material.emissiveIntensity = 0.5;
+          }
+          document.body.style.cursor = 'pointer'; // Change cursor to pointer
+        }}
+        onPointerLeave={(e) => {
+          if (meshRef.current) {
+            meshRef.current.material.color.set(0xffffff);
+            meshRef.current.material.emissiveIntensity = 0;
+          }
+          document.body.style.cursor = 'auto'; // Change cursor to pointer
+        }}
+        castShadow
+        receiveShadow
+      >
+        <meshStandardMaterial />
+      </mesh>
+      <AsteroidDetails ref={detailsRef} data={data} display={false} onClick={toggleVisibility} />
     </group>
   );
-};
+});
 
 export default Asteroid;
+
+
