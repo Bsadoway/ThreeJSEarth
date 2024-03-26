@@ -72,6 +72,10 @@ button:focus-visible {
   padding: 50px;
 }
 
+.a-details button {
+  max-height: 44px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

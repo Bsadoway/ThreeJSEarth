@@ -20,8 +20,8 @@ const params = {
   atmOpacity: { value: 0.7 },
   atmPowFactor: { value: 4.1 },
   atmMultiplier: { value: 9.5 },
-  astronomicalConversion: {value: 450}, // 1AU = 450 units in scale
-  earthSize: {value: 12}
+  astronomicalConversion: { value: 450 }, // 1AU = 450 units in scale
+  earthSize: { value: 12 }
 }
 
 const Scene = () => {
@@ -39,7 +39,6 @@ const Scene = () => {
   const moon = useTexture(moonTexture);
   const moonDis = useTexture(moonDisTexture);
   const asteroid = useTexture(asteroidTexture);
-  
 
   return (
     <>
@@ -64,18 +63,18 @@ const Scene = () => {
             castShadow={true}
           />
         </Sphere>
-        <Sphere args={[params.earthSize.value + 1.5 , 64, 64]}>
+        <Sphere args={[params.earthSize.value + 1.5, 64, 64]}>
           <glowMaterial blending={AdditiveBlending} side={BackSide} transparent={true} />
         </Sphere>
       </group>
 
       <Stars
-        radius={200}   
-        depth={10}   
-        count={12000}
+        radius={200}
+        depth={100}
+        count={10000}
         factor={4}
         saturation={15}
-        noise={0.5}
+        noise={0.9}
       />
 
       <object3D ref={moonRef}>
@@ -95,24 +94,20 @@ const Scene = () => {
         <orthographicCamera attach="shadow-camera" args={[-50, 10, 10, -10]} />
       </directionalLight>
       <Neos asteroidTexture={asteroid} earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
-      <CreateSolarSystem earthSize={params.earthSize.value}  astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
+      <CreateSolarSystem earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
     </>
   );
 };
 
 const App = () => {
   return (
-    <>     
+    <>
       <Canvas camera={{ fov: 40, position: [-45, 10, 20] }} style={{ background: "black" }}>
-        <OrbitControls maxPolarAngle={Math.PI / 2} enablePan={false} pan maxDistance={200} minDistance={20} min/>
+        <OrbitControls maxPolarAngle={Math.PI / 2} enablePan={false} pan maxDistance={200} minDistance={20} min />
         <PerspectiveCamera zoom={2} ></PerspectiveCamera>
         <Scene />
       </Canvas>
-      <Loader 
-      dataInterpolation={(p) => `Loading ${p.toFixed(2)}%`} // Text
-      initialState={(active) => active} // Initial black out state
-      />
-      </>
+    </>
   );
 };
 
