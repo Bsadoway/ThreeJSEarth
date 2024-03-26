@@ -3,10 +3,14 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import openSimplexNoise from 'https://cdn.skypack.dev/open-simplex-noise';
 import AsteroidDetails from "./AsteroidDetails";
+import { Sphere } from "@react-three/drei";
 
 
 const Asteroid = React.memo(({ id, position, data }) => {
+  const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4;
+
   const asteroidGeo = useMemo(() => {
+
     const newAsteroidGeo = new THREE.DodecahedronGeometry(4, 3);
     const vec = new THREE.Vector3();
     const pos = newAsteroidGeo.attributes.position;
@@ -26,12 +30,20 @@ const Asteroid = React.memo(({ id, position, data }) => {
 
   const meshRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
-
   const asteroidColour = isSelected ? 0xff0000 : 0x93928c;
 
   const toggleVisibility = (id) => {
     setIsSelected(!isSelected);
   };
+
+
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x += Math.random() * 0.001;
+      meshRef.current.rotation.y += Math.random() * 0.001;
+      meshRef.current.rotation.z += Math.random() * 0.001;
+    }
+  });
 
   return (
     <group>
@@ -39,6 +51,7 @@ const Asteroid = React.memo(({ id, position, data }) => {
         ref={meshRef}
         geometry={asteroidGeo}
         position={position}
+        scale={[asteroidSize, asteroidSize, asteroidSize]}
         onClick={() => toggleVisibility(id)}
         onPointerOver={(e) => {
           if (meshRef.current) {
@@ -58,6 +71,8 @@ const Asteroid = React.memo(({ id, position, data }) => {
       >
         <meshStandardMaterial color={asteroidColour} />
       </mesh>
+
+
       <AsteroidDetails data={data} display={isSelected} onClick={toggleVisibility} />
     </group>
   );

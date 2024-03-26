@@ -76,6 +76,11 @@ button:focus-visible {
   max-height: 44px;
 }
 
+.debug-hud {
+  transform: unset!important;
+  padding: 20px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

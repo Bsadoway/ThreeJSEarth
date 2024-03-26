@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Neos from './space/Neos.jsx';
 import { Canvas, useFrame, extend } from "@react-three/fiber";
-import { OrbitControls, Sphere, useTexture, Stars, shaderMaterial, OrthographicCamera, PerspectiveCamera, Loader } from "@react-three/drei";
+import { OrbitControls, Sphere, useTexture, Stars, shaderMaterial, OrthographicCamera, PerspectiveCamera, Loader, Html, SoftShadows } from "@react-three/drei";
 import earthTexture from './assets/textures/earthmap4k.jpg';
 import earthBump from "./assets/textures/earthbump4k.jpg";
 import earthClouds from "./assets/textures/earthclouds.png";
@@ -12,6 +12,7 @@ import asteroidTexture from "./assets/textures/asteroid_texture.jpg";
 
 import { AdditiveBlending, BackSide, DoubleSide, Group } from "three";
 import { frag, vert } from "./shaders/AtmosphereShader";
+import DebugHUD from "./utils/Debug.jsx";
 
 const params = {
   sunIntensity: 1.8, // brightness of the sun
@@ -28,11 +29,15 @@ const Scene = () => {
   const earthRef = useRef();
   const cloudRef = useRef();
   const moonRef = useRef();
+  const cameraRef = useRef();
+  const defaultCameraPosition = [-45, 10, 20];
+
   useFrame((state, delta) => {
     cloudRef.current.rotation.y += params.earthSpeedFactor * .01 * delta;
     earthRef.current.rotation.y += params.earthSpeedFactor * .01 * delta;
-    moonRef.current.rotation.y += params.moonSpeedFactor * .01 * delta;
+    moonRef.current.rotation.y += params.moonSpeedFactor * .01 * delta;   
   });
+
   const texture = useTexture(earthTexture);
   const bumpmap = useTexture(earthBump);
   const clouds = useTexture(earthClouds);
@@ -42,6 +47,19 @@ const Scene = () => {
 
   return (
     <>
+      <OrbitControls
+        panSpeed={5}
+        maxPolarAngle={Math.PI / 2} // Limit the camera from pointing below the horizon
+        minPolarAngle={0}            // Limit the camera from pointing above the horizon
+        enablePan={true}
+        maxDistance={200}
+        minDistance={20}
+        maxAzimuthAngle={Math.PI / -2}  // Limit the camera from rotating past this angle to the right
+        minAzimuthAngle={-Math.PI / 3} // Limit the camera from rotating past this angle to the left
+        min
+      />
+      <PerspectiveCamera zoom={2} ref={cameraRef}></PerspectiveCamera>
+
       <group ref={earthRef} >
         <Sphere smooth={1} args={[params.earthSize.value, 64, 64]}>
           <meshPhongMaterial
@@ -95,6 +113,8 @@ const Scene = () => {
       </directionalLight>
       <Neos asteroidTexture={asteroid} earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
       <CreateSolarSystem earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
+      <DebugHUD camera={cameraRef} defaultCameraPosition={defaultCameraPosition}/>
+      <SoftShadows samples={3} />
     </>
   );
 };
@@ -103,8 +123,6 @@ const App = () => {
   return (
     <>
       <Canvas camera={{ fov: 40, position: [-45, 10, 20] }} style={{ background: "black" }}>
-        <OrbitControls maxPolarAngle={Math.PI / 2} enablePan={false} pan maxDistance={200} minDistance={20} min />
-        <PerspectiveCamera zoom={2} ></PerspectiveCamera>
         <Scene />
       </Canvas>
     </>

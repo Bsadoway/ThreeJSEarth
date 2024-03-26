@@ -14,7 +14,7 @@ const AsteroidDetails = forwardRef(({ data, display, onClick }, ref) => {
             style={{
                 display: isVisible ? "block" : "none",
                 position: "absolute",
-                top: "80px",
+                top: "-250px",
                 left: "-150px",
                 padding: "10px",
                 color: "white",
