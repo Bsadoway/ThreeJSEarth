@@ -54,8 +54,8 @@ const Scene = () => {
         enablePan={true}
         maxDistance={200}
         minDistance={20}
-        maxAzimuthAngle={Math.PI / -2}  // Limit the camera from rotating past this angle to the right
-        minAzimuthAngle={-Math.PI / 3} // Limit the camera from rotating past this angle to the left
+        maxAzimuthAngle={Math.PI / -6}  // Limit the camera from rotating past this angle to the right
+        minAzimuthAngle={-Math.PI / 2} // Limit the camera from rotating past this angle to the left
         min
       />
       <PerspectiveCamera zoom={2} ref={cameraRef}></PerspectiveCamera>

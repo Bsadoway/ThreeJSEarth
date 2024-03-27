@@ -3,11 +3,13 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import openSimplexNoise from 'https://cdn.skypack.dev/open-simplex-noise';
 import AsteroidDetails from "./AsteroidDetails";
-import { Sphere } from "@react-three/drei";
-
 
 const Asteroid = React.memo(({ id, position, data }) => {
   const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4;
+  const meshRef = useRef();
+  const glowMeshRef = useRef();
+  const [isSelected, setIsSelected] = useState(false);
+  const asteroidColour = isSelected ? 0x000000 : 0x93928c;
 
   const asteroidGeo = useMemo(() => {
 
@@ -15,6 +17,7 @@ const Asteroid = React.memo(({ id, position, data }) => {
     const vec = new THREE.Vector3();
     const pos = newAsteroidGeo.attributes.position;
     const noise3d = openSimplexNoise.makeNoise3D(Math.random() * 100);
+
 
     for (let i = 0; i < pos.count; i++) {
       vec.fromBufferAttribute(pos, i).normalize();
@@ -28,21 +31,29 @@ const Asteroid = React.memo(({ id, position, data }) => {
     return newAsteroidGeo;
   }, []);
 
-  const meshRef = useRef();
-  const [isSelected, setIsSelected] = useState(false);
-  const asteroidColour = isSelected ? 0xff0000 : 0x93928c;
+  const glowMaterial = useMemo(() => new THREE.MeshBasicMaterial({
+    color: 0xFFFF00,
+    transparent: true,
+    opacity: 0.08,
+  }), []);
 
   const toggleVisibility = (id) => {
     setIsSelected(!isSelected);
   };
-
-
+  
   useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += Math.random() * 0.001;
-      meshRef.current.rotation.y += Math.random() * 0.001;
-      meshRef.current.rotation.z += Math.random() * 0.001;
+    const x = Math.random() * 0.001;
+    const y = Math.random() * 0.001;
+    const z = Math.random() * 0.001;
+    if (meshRef.current && glowMeshRef.current) {
+      meshRef.current.rotation.x += x;
+      meshRef.current.rotation.y += y;
+      meshRef.current.rotation.z += z;
+      glowMeshRef.current.rotation.x += x;
+      glowMeshRef.current.rotation.y += y;
+      glowMeshRef.current.rotation.z += z;
     }
+
   });
 
   return (
@@ -69,11 +80,17 @@ const Asteroid = React.memo(({ id, position, data }) => {
           document.body.style.cursor = 'auto'; // Change cursor to pointer
         }}
       >
-        <meshStandardMaterial color={asteroidColour} />
+        <meshStandardMaterial color={asteroidColour} wireframe={isSelected} />
       </mesh>
 
-
       <AsteroidDetails data={data} display={isSelected} onClick={toggleVisibility} />
+      <mesh
+        ref={glowMeshRef}
+        geometry={asteroidGeo}
+        material={glowMaterial}
+        position={position}
+        scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
+      />
     </group>
   );
 });

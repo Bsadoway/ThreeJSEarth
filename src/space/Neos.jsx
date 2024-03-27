@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Sphere, Center, Text3D, Float, Cloud, useMatcapTexture, Html } from '@react-three/drei';
+import { Sphere, Center, Text3D, Float, Cloud, useMatcapTexture, Html, Trail } from '@react-three/drei';
 import Asteroid from './Asteroid';
-import { Physics } from "@react-three/cannon";
-import { MeshBasicMaterial } from 'three';
 
 const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
     const [neos, setNEOs] = useState([]);
@@ -33,7 +31,8 @@ const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
                             data={neo}
                         >
                         </Asteroid>
-                        {/* <Clouds material={MeshBasicMaterial}>
+                       
+                            {/* <Clouds material={MeshBasicMaterial}>
                                 <Cloud segments={40} bounds={[10, 2, 2]} volume={10} color="orange" />
                                 <Cloud seed={1} scale={2} volume={5} color="hotpink" fade={100} />
                             </Clouds> */}
