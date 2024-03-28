@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import openSimplexNoise from 'https://cdn.skypack.dev/open-simplex-noise';
 import AsteroidDetails from "./AsteroidDetails";
 import asteroidTextureLoad from "/src/assets/textures/asteroid_texture.jpg";
-import { useTexture } from "@react-three/drei";
+import { Outlines, useTexture } from "@react-three/drei";
 
 const Asteroid = React.memo(({ id, position, data }) => {
   const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4;
@@ -64,7 +64,6 @@ const Asteroid = React.memo(({ id, position, data }) => {
       <mesh
         ref={meshRef}
         geometry={asteroidGeo}
-        position={position}
         scale={[asteroidSize, asteroidSize, asteroidSize]}
         onClick={() => toggleVisibility(id)}
         onPointerOver={(e) => {
@@ -85,6 +84,7 @@ const Asteroid = React.memo(({ id, position, data }) => {
         receiveShadow={!isSelected}
       >
         <meshStandardMaterial color={asteroidColour} wireframe={isSelected} map={asteroidTexture} />
+        <Outlines thickness={0.05} color="yellow" />
       </mesh>
 
       <AsteroidDetails data={data} display={isSelected} onClick={toggleVisibility} />
@@ -92,7 +92,6 @@ const Asteroid = React.memo(({ id, position, data }) => {
         ref={glowMeshRef}
         geometry={asteroidGeo}
         material={glowMaterial}
-        position={position}
         scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
       />
     </group>
