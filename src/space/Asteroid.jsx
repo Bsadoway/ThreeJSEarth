@@ -3,13 +3,16 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import openSimplexNoise from 'https://cdn.skypack.dev/open-simplex-noise';
 import AsteroidDetails from "./AsteroidDetails";
+import asteroidTextureLoad from "/src/assets/textures/asteroid_texture.jpg";
+import { useTexture } from "@react-three/drei";
 
 const Asteroid = React.memo(({ id, position, data }) => {
   const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4;
   const meshRef = useRef();
   const glowMeshRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
-  const asteroidColour = isSelected ? 0x000000 : 0x93928c;
+  const asteroidColour = isSelected ? 0xFF0000 : 0x93928c;
+  const asteroidTexture = useTexture(asteroidTextureLoad);
 
   const asteroidGeo = useMemo(() => {
 
@@ -40,7 +43,7 @@ const Asteroid = React.memo(({ id, position, data }) => {
   const toggleVisibility = (id) => {
     setIsSelected(!isSelected);
   };
-  
+
   useFrame(() => {
     const x = Math.random() * 0.001;
     const y = Math.random() * 0.001;
@@ -79,8 +82,9 @@ const Asteroid = React.memo(({ id, position, data }) => {
           }
           document.body.style.cursor = 'auto'; // Change cursor to pointer
         }}
+        receiveShadow={!isSelected}
       >
-        <meshStandardMaterial color={asteroidColour} wireframe={isSelected} />
+        <meshStandardMaterial color={asteroidColour} wireframe={isSelected} map={asteroidTexture} />
       </mesh>
 
       <AsteroidDetails data={data} display={isSelected} onClick={toggleVisibility} />

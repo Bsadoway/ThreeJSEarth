@@ -95,7 +95,7 @@ const Scene = () => {
         noise={0.9}
       />
 
-      <object3D ref={moonRef}>
+      <group ref={moonRef}>
         <Sphere args={[3.4, 10, 40]} position={[12, 6, -30]}>
           <meshPhongMaterial
             map={moon}
@@ -106,7 +106,7 @@ const Scene = () => {
             castShadow
           />
         </Sphere>
-      </object3D>
+      </group>
 
       <directionalLight castShadow position={[-2, 0, 30]} shadow-mapSize={[1024, 1024]} color="#FFF" intensity={params.sunIntensity}>
         <orthographicCamera attach="shadow-camera" args={[-50, 10, 10, -10]} />

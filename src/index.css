@@ -67,8 +67,8 @@ button:focus-visible {
   cursor: default;
 }
 
-.neo_descript{
-  transform: unset!important;
+.neo_descript {
+  transform: unset !important;
   padding: 50px;
 }
 
@@ -77,8 +77,17 @@ button:focus-visible {
 }
 
 .debug-hud {
-  transform: unset!important;
+  transform: unset !important;
   padding: 20px;
+}
+
+.planet-label {
+  position: absolute;
+  /* top: -120px!important; */
+  left: -50px!important;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: White;
+  font-size: 30px;
 }
 
 @media (prefers-color-scheme: light) {

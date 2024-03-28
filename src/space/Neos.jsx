@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Sphere, Center, Text3D, Float, Cloud, useMatcapTexture, Html, Trail } from '@react-three/drei';
+import { Float, Cloud, Html, Clouds } from '@react-three/drei';
 import Asteroid from './Asteroid';
-
+import * as THREE from 'three';
 const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
     const [neos, setNEOs] = useState([]);
-    const [matcapTexture] = useMatcapTexture("456A73_779B9E_173A46_154C5D");
+    const AUOffset = 10 // The AU distance offset from the actual surface of the Earth ot the Sun vs the zero'd out starting point
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,7 +22,7 @@ const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
     return (
         <>
             {neos.map((neo) => (
-                <group key={neo.id} position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical]}>
+                <group key={neo.id} position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical + AUOffset]}>
                     <Float speed={1} floatingRange={[1, neo.estimated_diameter.kilometers.estimated_diameter_max * 15]}>
                         <Asteroid
                             key={neo.id}
@@ -31,13 +31,11 @@ const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
                             data={neo}
                         >
                         </Asteroid>
-                       
-                            {/* <Clouds material={MeshBasicMaterial}>
-                                <Cloud segments={40} bounds={[10, 2, 2]} volume={10} color="orange" />
-                                <Cloud seed={1} scale={2} volume={5} color="hotpink" fade={100} />
-                            </Clouds> */}
-
+                        <Clouds material={THREE.MeshBasicMaterial}>
+                            <Cloud segments={3} bounds={[1, 1, 1]} volume={neo.estimated_diameter.kilometers.estimated_diameter_max * 40} color="grey" fade={50} opacity={.05} />
+                        </Clouds>
                     </Float>
+
                     <Html style={{ width: "150px", fontWeight: "bold", position: "absolute", left: "-30px" }}>
                         <div>{neo.name.replace(/[()]/g, "")}</div>
                     </Html>
