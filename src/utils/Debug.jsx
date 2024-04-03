@@ -38,7 +38,7 @@ const DebugHUD = ({ defaultCameraPosition }) => {
     };
 
     return (
-        <Html wrapperClass="debug-hud">
+        <Html wrapperClass="hud-transform-unset">
             <div style={style}>
                 <div>Camera Position:</div>
                 <div>X: {cameraPosition.x}</div>
