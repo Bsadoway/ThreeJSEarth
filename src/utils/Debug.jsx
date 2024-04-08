@@ -1,7 +1,6 @@
 import { Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useState } from "react";
-import { Vector3 } from "three";
 
 const DebugHUD = ({ defaultCameraPosition }) => {
     const { camera, controls } = useThree();
@@ -24,7 +23,6 @@ const DebugHUD = ({ defaultCameraPosition }) => {
         camera.position.x = defaultCameraPosition[0];
         camera.position.y = defaultCameraPosition[1];
         camera.position.z = defaultCameraPosition[2];
-        // controls.reset();
     };
 
     const style = {

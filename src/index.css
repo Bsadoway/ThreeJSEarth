@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Venite';
+  src: local('Venite'), url(/public/fonts/VeniteAdoremus-rgRBA.ttf) format('truetype');
+}
+
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,6 +17,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 #root {
@@ -126,14 +136,9 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.Asteroid:hover {
-  cursor: pointer;
+.blue-text {
+  color: #5cd5eb;
 }
-
-.Asteroid {
-  cursor: default;
-}
-
 .neo_descript {
   transform: unset !important;
   padding: 50px;
@@ -149,12 +154,24 @@ button:focus-visible {
 }
 
 .center-hud {
-  left: 50% !important;
+  left: 42% !important;
+}
+
+.date-label {
+  bottom: 150px!important;
+  top: unset!important;
+  left: 36% !important;
+  font-family: 'Venite';
+  text-align: center;
+}
+
+.pan-label {
+  bottom: 250px!important;
+  top: unset!important;
 }
 
 .planet-label {
   position: absolute;
-  /* top: -120px!important; */
   left: -50px !important;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: White;

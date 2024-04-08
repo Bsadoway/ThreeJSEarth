@@ -16,6 +16,7 @@ const PanSceneControl = () => {
     const style = {
         position: 'absolute',
         left: '50%',
+        // bottom: '-550px',
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -37,7 +38,7 @@ const PanSceneControl = () => {
 
     return (
         <>
-            <Html wrapperClass="hud-transform-unset center-hud">
+            <Html wrapperClass="hud-transform-unset center-hud pan-label">
                 <div style={style}>
                     <h3>Pan camera left and right</h3>
                     <input type="range" min={-200} max={100} step={1}

@@ -9,6 +9,7 @@ import PanSceneControl from "./utils/PanSceneControl.jsx";
 import Earth from "./space/Earth.jsx";
 import Moon from "./space/Moon.jsx";
 import params from "./utils/UniverseParams.jsx";
+import DateHud from "./utils/DateHud.jsx";
 
 const Scene = () => {
   const cameraRef = useRef();
@@ -36,6 +37,7 @@ const Scene = () => {
       <CreateSolarSystem earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
       <DebugHUD camera={cameraRef} defaultCameraPosition={defaultCameraPosition} />
       <SoftShadows samples={3} />
+      <DateHud/>
     </>
   );
 };

@@ -9,14 +9,14 @@ import OrbitLine from "./OrbitLine";
 
 
 const Asteroid = React.memo(({ id, position, data }) => {
-  const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4 > 4 ? 3 : data.estimated_diameter.kilometers.estimated_diameter_max * 4;
+  const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4 > 4 ? 3 : data.estimated_diameter.kilometers.estimated_diameter_max * 4; // limit peak size os asteroids cannot be larger than earth
   const meshRef = useRef();
   const glowMeshRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
   const asteroidColour = isSelected ? 0xFF0000 : 0x93928c;
   const asteroidTexture = useTexture(asteroidTextureLoad);
 
-  const asteroidGeo = useMemo(() => {
+  const asteroidGeo = useMemo(() => { // memo to prevent re-render
 
     const newAsteroidGeo = new THREE.DodecahedronGeometry(4, 3);
     const vec = new THREE.Vector3();
