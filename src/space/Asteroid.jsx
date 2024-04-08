@@ -4,10 +4,12 @@ import * as THREE from 'three';
 import openSimplexNoise from 'https://cdn.skypack.dev/open-simplex-noise';
 import AsteroidDetails from "./AsteroidDetails";
 import asteroidTextureLoad from "/src/assets/textures/asteroid_texture.jpg";
-import { Outlines, useTexture } from "@react-three/drei";
+import { Float, Outlines, useTexture } from "@react-three/drei";
+import OrbitLine from "./OrbitLine";
+
 
 const Asteroid = React.memo(({ id, position, data }) => {
-  const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4;
+  const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4 > 4 ? 3 : data.estimated_diameter.kilometers.estimated_diameter_max * 4;
   const meshRef = useRef();
   const glowMeshRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
@@ -61,39 +63,46 @@ const Asteroid = React.memo(({ id, position, data }) => {
 
   return (
     <group>
-      <mesh
-        ref={meshRef}
-        geometry={asteroidGeo}
-        scale={[asteroidSize, asteroidSize, asteroidSize]}
-        onClick={() => toggleVisibility(id)}
-        onPointerOver={(e) => {
-          if (meshRef.current) {
-            meshRef.current.material.color.set(0xfff000);
-            meshRef.current.material.emissive.set(0xff0000);
-            meshRef.current.material.emissiveIntensity = 0.5;
-          }
-          document.body.style.cursor = 'pointer'; // Change cursor to pointer
-        }}
-        onPointerLeave={(e) => {
-          if (meshRef.current) {
-            meshRef.current.material.color.set(asteroidColour);
-            meshRef.current.material.emissiveIntensity = 0;
-          }
-          document.body.style.cursor = 'auto'; // Change cursor to pointer
-        }}
-        receiveShadow={!isSelected}
-      >
-        <meshStandardMaterial color={asteroidColour} wireframe={isSelected} map={asteroidTexture} />
-        <Outlines thickness={0.05} color="yellow" />
-      </mesh>
-
-      <AsteroidDetails data={data} display={isSelected} onClick={toggleVisibility} />
-      <mesh
-        ref={glowMeshRef}
-        geometry={asteroidGeo}
-        material={glowMaterial}
-        scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
-      />
+      <group onClick={() => toggleVisibility(id)}>
+        <Float speed={1} floatingRange={[1, asteroidSize * 3.1]}>
+          <mesh
+            name={id}
+            ref={meshRef}
+            geometry={asteroidGeo}
+            scale={[asteroidSize, asteroidSize, asteroidSize]}
+            onPointerOver={(e) => {
+              if (meshRef.current) {
+                meshRef.current.material.color.set(0xfff000);
+                meshRef.current.material.emissive.set(0xff0000);
+                meshRef.current.material.emissiveIntensity = 0.5;
+              }
+              document.body.style.cursor = 'pointer'; // Change cursor to pointer
+            }}
+            onPointerLeave={(e) => {
+              if (meshRef.current) {
+                meshRef.current.material.color.set(asteroidColour);
+                meshRef.current.material.emissiveIntensity = 0;
+              }
+              document.body.style.cursor = 'auto'; // Change cursor to pointer
+            }}
+            receiveShadow={!isSelected}
+          >
+            <meshStandardMaterial color={asteroidColour} wireframe={isSelected} map={asteroidTexture} />
+            <Outlines thickness={0.05} color="yellow" />
+          </mesh>
+          <mesh
+          ref={glowMeshRef}
+          geometry={asteroidGeo}
+          material={glowMaterial}
+          scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
+        />
+        </Float>
+       
+        <OrbitLine id={id} position={position} radius={200} onClick={() => toggleVisibility(id)} />
+      </group>
+      <group>
+        <AsteroidDetails data={data} display={isSelected} onClick={toggleVisibility} />
+      </group>
     </group>
   );
 });
