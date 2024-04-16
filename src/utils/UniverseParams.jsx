@@ -9,7 +9,9 @@ const params = {
     astronomicalConversion: { value: 450 }, // 1AU = 450 units in scale
     earthSize: { value: 12 },
     sunPosition: [-20, 0, 530],
-    AUOffset: 10 // The AU distance offset from the actual surface of the Earth ot the Sun vs the zero'd out starting point
+    AUOffset: 10, // The AU distance offset from the actual surface of the Earth ot the Sun vs the zero'd out starting point
+    minAsteroidSize: .2,
+    maxAsteroidSize: 4
   }
 
   

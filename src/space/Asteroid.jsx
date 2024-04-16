@@ -6,15 +6,26 @@ import AsteroidDetails from "./AsteroidDetails";
 import asteroidTextureLoad from "/src/assets/textures/asteroid_texture.jpg";
 import { Float, Outlines, useTexture } from "@react-three/drei";
 import OrbitLine from "./OrbitLine";
-
+import params from "../utils/UniverseParams";
 
 const Asteroid = React.memo(({ id, position, data }) => {
-  const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4 > 4 ? 3 : data.estimated_diameter.kilometers.estimated_diameter_max * 4; // limit peak size so asteroids cannot be larger than earth
   const meshRef = useRef();
   const glowMeshRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
   const asteroidColour = isSelected ? 0xFF0000 : 0x93928c;
   const asteroidTexture = useTexture(asteroidTextureLoad);
+
+  const calculateMinAndMaxAsteroidSizes = () => {
+    const size = data.estimated_diameter.kilometers.estimated_diameter_max * 4;
+    if(size > params.maxAsteroidSize) {
+      return params.maxAsteroidSize; // Max Size
+    }
+    if(size < params.minAsteroidSize) {
+      return params.minAsteroidSize; // Min Size
+    }
+    return size;
+  }
+  const asteroidSize = calculateMinAndMaxAsteroidSizes();
 
   const asteroidGeo = useMemo(() => { // memo to prevent re-render
 
