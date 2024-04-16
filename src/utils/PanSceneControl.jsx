@@ -2,29 +2,36 @@ import React, { useState } from 'react';
 import { useThree } from '@react-three/fiber';
 import { Html, OrbitControls } from '@react-three/drei';
 
-const PanSceneControl = () => {
+const PanSceneControl = ({onUpdateCamera, cameraPosition}) => {
     const { scene, gl, camera } = useThree();
     const [panZ, setPanZ] = useState(0);
+    const [panY, setPanY] = useState(0);
     const [enableRotate, setEnableRotate] = useState(true);
 
     const handlePanZChange = (event) => {
         const value = parseFloat(event.target.value);
         setPanZ(value);
         scene.position.setZ(value);
+        onUpdateCamera({ x: camera.position.x, y: camera.position.y, z: value });
+    };
+
+    const handlePanYChange = (event) => {
+        const value = parseFloat(event.target.value);
+        setPanY(value);
+        scene.position.setY(value);
+        onUpdateCamera({ x: camera.position.x, y: value, z: camera.position.z });
     };
 
     const style = {
         position: 'absolute',
-        left: '50%',
-        // bottom: '-550px',
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: 'center',
+        fontFamily: "Venite",
         color: 'white',
         zIndex: 999,
-        width: '250px',
     };
+
+    const verticalRangeStyle = {
+        transform: 'rotate(-270deg)'     
+    }
 
     const handlePointerDown = () => {
         setEnableRotate(false);
@@ -38,11 +45,16 @@ const PanSceneControl = () => {
 
     return (
         <>
-            <Html wrapperClass="hud-transform-unset center-hud pan-label">
+            <Html wrapperClass="hud-transform-unset pan-label">
                 <div style={style}>
-                    <h3>Pan camera left and right</h3>
-                    <input type="range" min={-200} max={100} step={1}
+                    <p style={{position: "absolute", bottom: "-130px", left: "20px"}}>Camera pan</p>
+                    <input style={{transform: "translateY(20px) rotate(180deg)"}}type="range" min={-200} max={70} step={1} defaultValue={cameraPosition.y}
                         onChange={handlePanZChange}
+                        onPointerUp={handlePointerUp}
+                        onPointerDown={handlePointerDown}
+                    />
+                    <input style={verticalRangeStyle} type="range" min={-50} max={0} step={1} defaultValue={cameraPosition.z} 
+                        onChange={handlePanYChange}
                         onPointerUp={handlePointerUp}
                         onPointerDown={handlePointerDown}
                     />

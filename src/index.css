@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Venite';
-  src: local('Venite'), url(/public/fonts/VeniteAdoremus-rgRBA.ttf) format('truetype');
+  src: local('Venite'), url(/fonts/VeniteAdoremus-rgRBA.ttf) format('truetype');
 }
 
 
@@ -33,7 +33,7 @@ input[type="range"] {
   appearance: none;
   background: transparent;
   cursor: pointer;
-  width: 15rem;
+  width: 10rem;
   -webkit-transform: rotateY(180deg) scaleX(1.7);
   -moz-transform: rotateY(180deg) scaleX(1.7);
   -ms-transform: rotateY(180deg) scaleX(1.7);
@@ -151,10 +151,7 @@ button:focus-visible {
 .hud-transform-unset {
   transform: unset !important;
   padding: 20px;
-}
-
-.center-hud {
-  left: 42% !important;
+  z-index: 100000000!important; /* obscenely large z-index to override the built in three fiber dynamic z-index*/
 }
 
 .date-label {
@@ -166,16 +163,20 @@ button:focus-visible {
 }
 
 .pan-label {
-  bottom: 250px!important;
+  bottom: 170px!important;
   top: unset!important;
+  left: unset!important;
+  right: 13vw;
 }
 
 .planet-label {
+  font-family: Venite;
+  color: #5cd5eb;
   position: absolute;
-  left: -50px !important;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: White;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: Black;
   font-size: 30px;
+  z-index: 10!important;
 }
 
 @media (prefers-color-scheme: light) {

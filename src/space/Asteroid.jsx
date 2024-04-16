@@ -9,7 +9,7 @@ import OrbitLine from "./OrbitLine";
 
 
 const Asteroid = React.memo(({ id, position, data }) => {
-  const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4 > 4 ? 3 : data.estimated_diameter.kilometers.estimated_diameter_max * 4; // limit peak size os asteroids cannot be larger than earth
+  const asteroidSize = data.estimated_diameter.kilometers.estimated_diameter_max * 4 > 4 ? 3 : data.estimated_diameter.kilometers.estimated_diameter_max * 4; // limit peak size so asteroids cannot be larger than earth
   const meshRef = useRef();
   const glowMeshRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
@@ -42,7 +42,8 @@ const Asteroid = React.memo(({ id, position, data }) => {
     opacity: 0.08,
   }), []);
 
-  const toggleVisibility = (id) => {
+  const toggleVisibility = (event) => {
+    event.stopPropagation();    
     setIsSelected(!isSelected);
   };
 
@@ -63,7 +64,7 @@ const Asteroid = React.memo(({ id, position, data }) => {
 
   return (
     <group>
-      <group onClick={() => toggleVisibility(id)}>
+      <group onClick={(e) => toggleVisibility(e)}>
         <Float speed={1} floatingRange={[1, asteroidSize * 3.1]}>
           <mesh
             name={id}
@@ -91,14 +92,14 @@ const Asteroid = React.memo(({ id, position, data }) => {
             <Outlines thickness={0.05} color="yellow" />
           </mesh>
           <mesh
-          ref={glowMeshRef}
-          geometry={asteroidGeo}
-          material={glowMaterial}
-          scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
-        />
+            ref={glowMeshRef}
+            geometry={asteroidGeo}
+            material={glowMaterial}
+            scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
+          />
         </Float>
-       
-        <OrbitLine id={id} position={position} radius={200} onClick={() => toggleVisibility(id)} />
+
+        <OrbitLine id={id} position={position} radius={200} onClick={(e) => toggleVisibility(e)} />
       </group>
       <group>
         <AsteroidDetails data={data} display={isSelected} onClick={toggleVisibility} />

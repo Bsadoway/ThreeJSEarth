@@ -16,14 +16,16 @@ const AsteroidDetails = forwardRef(({ data, display, onClick }, ref) => {
                 display: isVisible ? "block" : "none",
                 position: "absolute",
                 left: "40vw",
-                padding: "40px",
+                padding: "20px 30px 30px",
                 color: "white",
                 background: "rgba(0, 0, 0, 0.5)",
                 transform: "unset",
                 fontFamily: "Venite",
                 width: '500px',
-                backgroundColor: 'rgba(255,255,255, .1)',
-                borderRadius: '15px'
+                backgroundColor: 'rgba(90,90,90, 1)',
+                borderRadius: '15px',
+                zIndex: '99999'
+
             }}
             className="a-details"
         >

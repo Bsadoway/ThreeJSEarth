@@ -1,6 +1,7 @@
 import { Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useState } from "react";
+import PanSceneControl from "./PanSceneControl";
 
 const DebugHUD = ({ defaultCameraPosition }) => {
     const { camera, controls } = useThree();
@@ -25,6 +26,14 @@ const DebugHUD = ({ defaultCameraPosition }) => {
         camera.position.z = defaultCameraPosition[2];
     };
 
+    const updateCameraPosition = ({ x, y, z }) => {
+        setCameraPosition({
+            x: x,
+            y: y,
+            z: z,
+        });
+    };
+
     const style = {
         position: 'absolute',
         top: 0,
@@ -32,20 +41,23 @@ const DebugHUD = ({ defaultCameraPosition }) => {
         padding: '10px',
         color: 'white',
         zIndex: 999,
-        width: '150px',
+        width: '230px',
     };
 
     return (
-        <Html wrapperClass="hud-transform-unset">
-            <div style={style}>
-                <div>Camera Position:</div>
-                <div>X: {cameraPosition.x}</div>
-                <div>Y: {cameraPosition.y}</div>
-                <div>Z: {cameraPosition.z}</div>
-                <br />
-                <button onClick={resetCamera}>Reset Camera</button>
-            </div>
-        </Html>
+        <>
+            <PanSceneControl onUpdateCamera={updateCameraPosition} cameraPosition={cameraPosition} />
+            <Html wrapperClass="hud-transform-unset">
+                <div style={style}>
+                    <div>Camera Rotation:</div>
+                    <div>X: {cameraPosition.x}</div>
+                    <div>Y: {cameraPosition.y}</div>
+                    <div>Z: {cameraPosition.z}</div>
+                    <br />
+                    <button onClick={resetCamera}>Reset Camera</button>
+                </div>
+            </Html>
+        </>
     );
 };
 

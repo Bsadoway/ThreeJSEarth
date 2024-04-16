@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import Neos from './space/Neos.jsx';
 import { Canvas, extend } from "@react-three/fiber";
-import { Stars, shaderMaterial, PerspectiveCamera, SoftShadows } from "@react-three/drei";
+import { Stars, shaderMaterial, PerspectiveCamera, SoftShadows, Clouds, Cloud } from "@react-three/drei";
 import CreateSolarSystem from "./space/SolarSystem.jsx";
 import { frag, vert } from "./shaders/AtmosphereShader";
 import DebugHUD from "./utils/Debug.jsx";
@@ -10,15 +10,15 @@ import Earth from "./space/Earth.jsx";
 import Moon from "./space/Moon.jsx";
 import params from "./utils/UniverseParams.jsx";
 import DateHud from "./utils/DateHud.jsx";
+import { MeshBasicMaterial } from "three";
 
 const Scene = () => {
   const cameraRef = useRef();
-  const defaultCameraPosition = [-45, 10, 20];
 
   return (
     <>
-      <PanSceneControl />
-      <PerspectiveCamera zoom={2} ref={cameraRef}></PerspectiveCamera>
+      
+      <PerspectiveCamera zoom={1} ref={cameraRef}></PerspectiveCamera>
       <Earth />
       <Stars
         radius={200}
@@ -29,15 +29,14 @@ const Scene = () => {
         noise={0.9}
       />
       <Moon />
-
-      <directionalLight castShadow position={[-2, 0, 30]} shadow-mapSize={[1024, 1024]} color="#FFF" intensity={params.sunIntensity}>
+      <directionalLight castShadow position={params.sunPosition} shadow-mapSize={[1024, 1024]} color="#FFF" intensity={params.sunIntensity}>
         <orthographicCamera attach="shadow-camera" args={[-50, 10, 10, -10]} />
       </directionalLight>
       <Neos earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
       <CreateSolarSystem earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
-      <DebugHUD camera={cameraRef} defaultCameraPosition={defaultCameraPosition} />
+      <DebugHUD camera={cameraRef} defaultCameraPosition={params.defaultCameraPosition} />
       <SoftShadows samples={3} />
-      <DateHud/>
+      <DateHud />
     </>
   );
 };
@@ -45,7 +44,7 @@ const Scene = () => {
 const App = () => {
   return (
     <>
-      <Canvas camera={{ fov: 40, position: [-45, 10, 20] }} style={{ background: "black" }}>
+      <Canvas camera={{ fov: 40, position: params.defaultCameraPosition }} style={{ background: "black" }}>
         <Scene />
       </Canvas>
     </>
