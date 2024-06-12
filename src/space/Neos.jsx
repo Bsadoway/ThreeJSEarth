@@ -20,6 +20,7 @@ const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
         fetchData();
     }, []);
 
+
     return (
         <>
             {neos.map((neo) => (
@@ -35,10 +36,6 @@ const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
                     <Clouds material={THREE.MeshBasicMaterial}>
                         <Cloud segments={3} bounds={[1, 1, 1]} volume={neo.estimated_diameter.kilometers.estimated_diameter_max * 40} color="grey" fade={50} opacity={.05} />
                     </Clouds>
-
-                    <Html style={{ zIndex: "10", width: "150px", fontWeight: "bold", fontFamily:"Venite", color: "white", position: "absolute", left: "-30px", WebkitTextStrokeWidth: "1px", WebkitTextStrokeColor: 'black'}}>
-                        <div>{neo.name.replace(/[()]/g, "")}</div>
-                    </Html>
 
                 </group>
             ))}

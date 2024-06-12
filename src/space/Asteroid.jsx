@@ -1,10 +1,10 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import openSimplexNoise from 'https://cdn.skypack.dev/open-simplex-noise';
 import AsteroidDetails from "./AsteroidDetails";
 import asteroidTextureLoad from "/src/assets/textures/asteroid_texture.jpg";
-import { Float, Outlines, useTexture } from "@react-three/drei";
+import { Float, Html, Outlines, useTexture } from "@react-three/drei";
 import OrbitLine from "./OrbitLine";
 import params from "../utils/UniverseParams";
 
@@ -17,10 +17,10 @@ const Asteroid = React.memo(({ id, position, data }) => {
 
   const calculateMinAndMaxAsteroidSizes = () => {
     const size = data.estimated_diameter.kilometers.estimated_diameter_max * 4;
-    if(size > params.maxAsteroidSize) {
+    if (size > params.maxAsteroidSize) {
       return params.maxAsteroidSize; // Max Size
     }
-    if(size < params.minAsteroidSize) {
+    if (size < params.minAsteroidSize) {
       return params.minAsteroidSize; // Min Size
     }
     return size;
@@ -54,14 +54,18 @@ const Asteroid = React.memo(({ id, position, data }) => {
   }), []);
 
   const toggleVisibility = (event) => {
-    event.stopPropagation();    
+    event.stopPropagation();
     setIsSelected(!isSelected);
   };
 
-  useFrame(() => {
+  useFrame(( {clock}) => {
     const x = Math.random() * 0.001;
     const y = Math.random() * 0.001;
     const z = Math.random() * 0.001;
+    const time = clock.getElapsedTime();
+    const speed = 0.5;
+    const height = 1;
+    const randomOffset = (id * .00001) * Math.PI * .002 // Random offset for variety
     if (meshRef.current && glowMeshRef.current) {
       meshRef.current.rotation.x += x;
       meshRef.current.rotation.y += y;
@@ -69,14 +73,16 @@ const Asteroid = React.memo(({ id, position, data }) => {
       glowMeshRef.current.rotation.x += x;
       glowMeshRef.current.rotation.y += y;
       glowMeshRef.current.rotation.z += z;
-    }
 
+      meshRef.current.position.y = Math.sin(time * speed + randomOffset) * height;
+      glowMeshRef.current.position.y = Math.sin(time * speed + randomOffset) * height; 
+    }
   });
 
   return (
     <group>
       <group onClick={(e) => toggleVisibility(e)}>
-        <Float speed={1} floatingRange={[1, asteroidSize * 3.1]}>
+        {/* <Float speed={1} floatingRange={[-asteroidSize * (Math.random() * 4), asteroidSize * (Math.random() * 4)]}> */}
           <mesh
             name={id}
             ref={meshRef}
@@ -108,7 +114,11 @@ const Asteroid = React.memo(({ id, position, data }) => {
             material={glowMaterial}
             scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
           />
-        </Float>
+
+          <Html style={{ zIndex: "10", width: "150px", fontWeight: "bold", fontFamily: "Venite", color: "white", position: "absolute", left: "-30px", WebkitTextStrokeWidth: "1px", WebkitTextStrokeColor: 'black' }}>
+            <div>{data.name.replace(/[()]/g, "")}</div>
+          </Html>
+        {/* </Float> */}
 
         <OrbitLine id={id} position={position} radius={200} onClick={(e) => toggleVisibility(e)} />
       </group>

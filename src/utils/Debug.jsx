@@ -47,7 +47,7 @@ const DebugHUD = ({ defaultCameraPosition }) => {
     return (
         <>
             <PanSceneControl onUpdateCamera={updateCameraPosition} cameraPosition={cameraPosition} />
-            <Html wrapperClass="hud-transform-unset">
+            <Html wrapperClass="hud-transform-unset debug-hud">
                 <div style={style}>
                     <div>Camera Rotation:</div>
                     <div>X: {cameraPosition.x}</div>

@@ -10,26 +10,15 @@ const AsteroidDetails = forwardRef(({ data, display, onClick }, ref) => {
 
     return (
         <Html
-        wrapperClass="hud-transform-unset"
+        wrapperClass="hud-transform-unset center-absolute"
             ref={ref}
             style={{
-                display: isVisible ? "block" : "none",
-                position: "absolute",
-                left: "40vw",
-                padding: "20px 30px 30px",
-                color: "white",
-                background: "rgba(0, 0, 0, 0.5)",
-                transform: "unset",
-                fontFamily: "Venite",
-                width: '500px',
-                backgroundColor: 'rgba(90,90,90, 1)',
-                borderRadius: '15px',
-                zIndex: '99999'
+                display: isVisible ? "block" : "none",               
 
             }}
             className="a-details"
         >
-            <div className={"a-details"} style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div>
                     <h2>Name: <span className="blue-text">{data.name} </span> </h2>
                     Size: <span className="blue-text">{data.estimated_diameter.kilometers.estimated_diameter_max} km </span>

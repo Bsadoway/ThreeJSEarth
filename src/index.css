@@ -144,8 +144,34 @@ button:focus-visible {
   padding: 50px;
 }
 
+.a-details {
+  top: -300px;
+  opacity: 0;
+  animation: smooth-appear 1s ease forwards;
+  padding: 20px 30px 30px;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  transform: unset;
+  font-family: Venite;
+  width: 500px;
+  background-color: rgba(90,90,90, 1);
+  border-radius: 15px;
+  z-index: 99999;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
 .a-details button {
   max-height: 44px;
+}
+
+.center-absolute {
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hud-transform-unset {
@@ -157,9 +183,13 @@ button:focus-visible {
 .date-label {
   bottom: 150px!important;
   top: unset!important;
-  left: 36% !important;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0 !important;
+  right: 0 !important;
   font-family: 'Venite';
   text-align: center;
+  width: 400px;
 }
 
 .pan-label {
@@ -175,7 +205,7 @@ button:focus-visible {
   position: absolute;
   -webkit-text-stroke-width: .5px;
   -webkit-text-stroke-color: Black;
-  font-size: 30px;
+  font-size: 20px;
   z-index: 10!important;
 }
 
@@ -189,5 +219,43 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+
+@media only screen and (max-width: 800px) {
+  .a-details{
+    width: 300px!important;
+    font-size: 16px;
+  }
+  .date-label{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0 !important;
+    right: 0 !important;
+  }
+  .date-label  div div{
+    font-family: 'Venite';
+    text-align: center;
+    font-size: 24px!important;
+    width:220px!important;
+    padding: 0!important;
+  }
+  .debug-hud {
+    display: none;
+  }
+
+  .pan-label {
+    top: 38px !important;
+    left: 0 !important;
+  }
+}
+
+
+@keyframes smooth-appear {
+  to{
+    top: 20px;
+    opacity:1;
   }
 }
