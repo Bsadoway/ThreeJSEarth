@@ -29,7 +29,7 @@ const AsteroidDetails = forwardRef(({ data, display, onClick }, ref) => {
             }}
             className="a-details"
         >
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className={"a-details"} style={{ display: "flex", justifyContent: "space-between" }}>
                 <div>
                     <h2>Name: <span className="blue-text">{data.name} </span> </h2>
                     Size: <span className="blue-text">{data.estimated_diameter.kilometers.estimated_diameter_max} km </span>
