@@ -10,9 +10,10 @@ const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('src/data/NeoData.json');
+                const response = await fetch('http://localhost:3000/api/neo');
                 const data = await response.json();
-                setNEOs(data.near_earth_objects["2024-03-02"] || []);
+                const latestNEOs = data.length ? data[data.length - 1].neoData : [];
+                setNEOs(latestNEOs);
             } catch (error) {
                 console.error('Error fetching NEO data:', error);
             }
