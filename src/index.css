@@ -192,6 +192,13 @@ button:focus-visible {
   width: 400px;
 }
 
+.date-arrows {
+  z-index: 9999;
+  position: relative;
+  left: 200%;
+  bottom: -124px;
+}
+
 .pan-label {
   bottom: 170px!important;
   top: unset!important;

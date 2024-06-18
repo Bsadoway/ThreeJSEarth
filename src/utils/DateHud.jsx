@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Html } from "@react-three/drei";
 
-const DateHud = () => {
-  const today = new Date().toLocaleDateString();
+const DateHud = ({date, onDateChange ,setDate}) => {
+  // const [date, setDate] = useState(new Date());
+
+  const formatDate = (date) => {
+    return date.toLocaleDateString();
+  };
 
   const style = {
     position: 'absolute',
@@ -11,13 +15,38 @@ const DateHud = () => {
     zIndex: 999,
     width: '450px',
     fontSize: '40px'
-};
+  };
+
+  const handlePrevDay = () => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() - 1);
+    console.log("new day behind " + newDate);
+    setDate(newDate);
+    onDateChange(newDate);
+  };
+
+  const handleNextDay = () => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + 1);
+    console.log("new day ahead " + newDate);
+    setDate(newDate);
+    onDateChange(newDate);
+  };
+
+
   return (
-      <Html wrapperClass="hud-transform-unset date-label" center>
-        <div style={style}>
-          Today's Date: {today}
-        </div>
-      </Html>
+    <Html wrapperClass="hud-transform-unset date-label">
+
+      <div style={style}>
+        Date<br></br> {formatDate(date)}
+      </div>
+      <div className="date-arrows">
+        <button className="ld-arrow" onClick={handlePrevDay}> <span> &lsaquo;  </span> </button>
+        <button className="rd-arrow" onClick={handleNextDay}> <span> &rsaquo;  </span> </button>
+
+      </div>
+
+    </Html>
   );
 };
 

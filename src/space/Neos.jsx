@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { Float, Cloud, Html, Clouds } from '@react-three/drei';
+import { Cloud, Clouds } from '@react-three/drei';
 import Asteroid from './Asteroid';
 import * as THREE from 'three';
 import params from '../utils/UniverseParams';
-const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
+import toast from 'react-hot-toast';
+
+const NEOS = React.memo(({ astronomicalConversion, date }) => {
     const [neos, setNEOs] = useState([]);
-    
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/neo');
+                const formattedDate = date.toLocaleDateString();
+                const response = await fetch(`http://localhost:3000/api/neo?date=${formattedDate}`);
                 const data = await response.json();
-                const latestNEOs = data.length ? data[data.length - 1].neoData : [];
-                setNEOs(latestNEOs);
+                if (data[formattedDate]) {
+                    setNEOs(data[formattedDate]);
+                    console.log("Fetched neos for " + formattedDate);
+                } else {
+                    toast.error("Error finding Neo data, please refresh or try another browser");
+                    toast.error("No NEO data available for " + date);
+
+                }               
             } catch (error) {
                 console.error('Error fetching NEO data:', error);
             }
+
         };
         fetchData();
-    }, []);
+    }, [date]);
+
+    if (neos.length === 0) {
+        
+    }
 
 
     return (
@@ -44,5 +57,5 @@ const NEO = React.memo(({ earthSize, astronomicalConversion }) => {
     );
 });
 
-export default NEO;
+export default NEOS;
 

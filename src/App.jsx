@@ -10,7 +10,10 @@ import Earth from "./space/Earth.jsx";
 import Moon from "./space/Moon.jsx";
 import params from "./utils/UniverseParams.jsx";
 import DateHud from "./utils/DateHud.jsx";
+import toast, { Toaster } from 'react-hot-toast';
+
 import { MeshBasicMaterial } from "three";
+import Dashboard from "./utils/Dashboard.jsx";
 
 const Scene = () => {
   const cameraRef = useRef();
@@ -32,11 +35,14 @@ const Scene = () => {
       <directionalLight castShadow position={params.sunPosition} shadow-mapSize={[1024, 1024]} color="#FFF" intensity={params.sunIntensity}>
         <orthographicCamera attach="shadow-camera" args={[-50, 10, 10, -10]} />
       </directionalLight>
-      <Neos earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
+      <Dashboard astronomicalConversion={params.astronomicalConversion.value}/>
+      {/* <Neos earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} />
+      <DateHud /> */}
       <CreateSolarSystem earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
       <DebugHUD camera={cameraRef} defaultCameraPosition={params.defaultCameraPosition} />
       <SoftShadows samples={3} />
-      <DateHud />
+      
+      
     </>
   );
 };
@@ -47,6 +53,7 @@ const App = () => {
       <Canvas camera={{ fov: 40, position: params.defaultCameraPosition }} style={{ background: "black" }}>
         <Scene />
       </Canvas>
+      <Toaster />
     </>
   );
 };

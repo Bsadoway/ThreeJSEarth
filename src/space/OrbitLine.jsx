@@ -2,7 +2,7 @@ import { useThree } from '@react-three/fiber';
 import React, { useRef } from 'react';
 import * as THREE from 'three';
 
-const OrbitLine = ({ position, radius, id, onClick }) => {
+const OrbitLine = ({ position, radius, onClick }) => {
     const lineRef = useRef();
     const lineColor = 0xFF0000;
 
