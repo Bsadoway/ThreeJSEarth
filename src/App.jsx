@@ -5,14 +5,11 @@ import { Stars, shaderMaterial, PerspectiveCamera, SoftShadows, Clouds, Cloud } 
 import CreateSolarSystem from "./space/SolarSystem.jsx";
 import { frag, vert } from "./shaders/AtmosphereShader";
 import DebugHUD from "./utils/Debug.jsx";
-import PanSceneControl from "./utils/PanSceneControl.jsx";
 import Earth from "./space/Earth.jsx";
 import Moon from "./space/Moon.jsx";
 import params from "./utils/UniverseParams.jsx";
-import DateHud from "./utils/DateHud.jsx";
 import toast, { Toaster } from 'react-hot-toast';
 
-import { MeshBasicMaterial } from "three";
 import Dashboard from "./utils/Dashboard.jsx";
 
 const Scene = () => {

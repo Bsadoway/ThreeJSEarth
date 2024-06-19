@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Html } from "@react-three/drei";
 
 const DateHud = ({date, onDateChange ,setDate}) => {
-  // const [date, setDate] = useState(new Date());
 
   const formatDate = (date) => {
     return date.toLocaleDateString();
@@ -43,7 +42,6 @@ const DateHud = ({date, onDateChange ,setDate}) => {
       <div className="date-arrows">
         <button className="ld-arrow" onClick={handlePrevDay}> <span> &lsaquo;  </span> </button>
         <button className="rd-arrow" onClick={handleNextDay}> <span> &rsaquo;  </span> </button>
-
       </div>
 
     </Html>
