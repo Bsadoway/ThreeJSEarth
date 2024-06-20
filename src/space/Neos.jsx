@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Cloud, Clouds } from '@react-three/drei';
 import Asteroid from './Asteroid';
 import * as THREE from 'three';
@@ -30,15 +30,12 @@ const NEOS = React.memo(({ astronomicalConversion, date }) => {
         fetchData();
     }, [date]);
 
-    if (neos.length === 0) {
-        
-    }
-
-
     return (
         <>
-            {neos.map((neo) => (
-                <group key={neo.id} position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical + params.AUOffset]}>
+            {neos.map((neo, index) => (
+                <group key={neo.id} 
+                position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical + params.AUOffset]}
+                >
                     <Asteroid
                         key={neo.id}
                         id={neo.id}

@@ -3,7 +3,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useState } from "react";
 import PanSceneControl from "./PanSceneControl";
 
-const DebugHUD = ({ defaultCameraPosition }) => {
+const DebugHUD = ({ cameraControls }) => {
     const { camera, controls } = useThree();
     const [cameraPosition, setCameraPosition] = useState({
         x: camera.position.x.toFixed(2),
@@ -21,9 +21,7 @@ const DebugHUD = ({ defaultCameraPosition }) => {
     });
 
     const resetCamera = () => {
-        camera.position.x = defaultCameraPosition[0];
-        camera.position.y = defaultCameraPosition[1];
-        camera.position.z = defaultCameraPosition[2];
+        cameraControls.current?.reset(true);
     };
 
     const updateCameraPosition = ({ x, y, z }) => {

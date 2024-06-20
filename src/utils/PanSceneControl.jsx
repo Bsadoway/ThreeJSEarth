@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useThree } from '@react-three/fiber';
-import { Html, OrbitControls } from '@react-three/drei';
+import { CameraControls, Html, OrbitControls } from '@react-three/drei';
 
 const PanSceneControl = ({onUpdateCamera, cameraPosition}) => {
     const { scene, gl, camera } = useThree();
@@ -60,18 +60,7 @@ const PanSceneControl = ({onUpdateCamera, cameraPosition}) => {
                     />
                 </div>
             </Html>
-            <OrbitControls
-                panSpeed={5}
-                maxPolarAngle={Math.PI / 2} // Limit the camera from pointing below the horizon
-                minPolarAngle={0}            // Limit the camera from pointing above the horizon
-                enableRotate={enableRotate}
-                enablePan={false}
-                maxDistance={200}
-                minDistance={20}
-                maxAzimuthAngle={Math.PI / -6}  // Limit the camera from rotating past this angle to the right
-                minAzimuthAngle={-Math.PI / 2} // Limit the camera from rotating past this angle to the left
-                min
-            />
+
         </>
     );
 };
