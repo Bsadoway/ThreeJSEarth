@@ -60,7 +60,7 @@ const Asteroid = React.memo(({ id, position, data, cameraControlsRef }) => {
     cameraControlsRef.current?.fitToBox(meshRef.current, true);
   };
 
-  useFrame(( {clock}) => {
+  useFrame(({ clock }) => {
     const x = Math.random() * 0.001;
     const y = Math.random() * 0.001;
     const z = Math.random() * 0.001;
@@ -77,51 +77,60 @@ const Asteroid = React.memo(({ id, position, data, cameraControlsRef }) => {
       glowMeshRef.current.rotation.z += z;
 
       meshRef.current.position.y = Math.sin(time * speed + randomOffset) * height;
-      glowMeshRef.current.position.y = Math.sin(time * speed + randomOffset) * height; 
+      glowMeshRef.current.position.y = Math.sin(time * speed + randomOffset) * height;
     }
   });
 
   return (
     <group>
       <group onClick={(e) => toggleVisibility(e)}>
-        {/* <Float speed={1} floatingRange={[-asteroidSize * (Math.random() * 4), asteroidSize * (Math.random() * 4)]}> */}
-          <mesh
-            name={id}
-            ref={meshRef}
-            geometry={asteroidGeo}
-            scale={[asteroidSize, asteroidSize, asteroidSize]}
-            onPointerOver={(e) => {
-              if (meshRef.current) {
-                meshRef.current.material.color.set(0xfff000);
-                meshRef.current.material.emissive.set(0xff0000);
-                meshRef.current.material.emissiveIntensity = 0.5;
-              }
-              document.body.style.cursor = 'pointer'; // Change cursor to pointer
-            }}
-            onPointerLeave={(e) => {
-              if (meshRef.current) {
-                meshRef.current.material.color.set(asteroidColour);
-                meshRef.current.material.emissiveIntensity = 0;
-              }
-              document.body.style.cursor = 'auto'; // Change cursor to pointer
-            }}
-            receiveShadow={!isSelected}
-          >
-            <meshStandardMaterial color={asteroidColour} wireframe={isSelected} map={asteroidTexture} />
-            <Outlines thickness={0.05} color="yellow" />
-          </mesh>
-          <mesh
-            ref={glowMeshRef}
-            geometry={asteroidGeo}
-            material={glowMaterial}
-            scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
-          />
-
-          <Html style={{ zIndex: "10", width: "150px", fontWeight: "bold", fontFamily: "Venite", color: "white", position: "absolute", left: "-30px", WebkitTextStrokeWidth: "1px", WebkitTextStrokeColor: 'black' }}>
+        <mesh
+          name={id}
+          ref={meshRef}
+          geometry={asteroidGeo}
+          scale={[asteroidSize, asteroidSize, asteroidSize]}
+          onPointerOver={(e) => {
+            if (meshRef.current) {
+              meshRef.current.material.color.set(0xfff000);
+              meshRef.current.material.emissive.set(0xff0000);
+              meshRef.current.material.emissiveIntensity = 0.5;
+            }
+            document.body.style.cursor = 'pointer'; // Change cursor to pointer
+          }}
+          onPointerLeave={(e) => {
+            if (meshRef.current) {
+              meshRef.current.material.color.set(asteroidColour);
+              meshRef.current.material.emissiveIntensity = 0;
+            }
+            document.body.style.cursor = 'auto'; // Change cursor to pointer
+          }}
+          receiveShadow={!isSelected}
+        >
+          <meshStandardMaterial color={asteroidColour} wireframe={isSelected} map={asteroidTexture} />
+          <Outlines thickness={0.05} color="yellow" />
+          <Html
+            style={{
+              zIndex: "10",
+              width: "150px",
+              fontWeight: "bold",
+              fontFamily: "Venite",
+              color: "white",
+              position: "absolute",
+              left: "-30px",
+              bottom: "-50px",
+              opacity: "50%",
+              WebkitTextStrokeWidth: "1px",
+              WebkitTextStrokeColor: 'black'
+            }}>
             <div>{data.name.replace(/[()]/g, "")}</div>
           </Html>
-        {/* </Float> */}
-
+        </mesh>
+        <mesh
+          ref={glowMeshRef}
+          geometry={asteroidGeo}
+          material={glowMaterial}
+          scale={[asteroidSize * 1.2, asteroidSize * 1.2, asteroidSize * 1.2]}
+        />
         <OrbitLine id={id} position={position} radius={200} onClick={(e) => toggleVisibility(e)} />
       </group>
       <group>

@@ -181,7 +181,7 @@ button:focus-visible {
 }
 
 .date-label {
-  bottom: 150px!important;
+  bottom: 200px!important;
   top: unset!important;
   margin-left: auto;
   margin-right: auto;
@@ -195,8 +195,12 @@ button:focus-visible {
 .date-arrows {
   z-index: 9999;
   position: relative;
-  left: 200%;
-  bottom: -124px;
+  left: 170%;
+  bottom: -140px;
+}
+
+.rd-arrow {
+  margin-left: 10px;
 }
 
 .pan-label {
@@ -215,6 +219,43 @@ button:focus-visible {
   font-size: 20px;
   z-index: 10!important;
 }
+
+/* Loading Spinner */
+
+.loading-overlay {
+  font-family: Venite;
+  font-size: 20px;
+  width: 450px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 25px solid #5cd5eb;
+  border-top-color: #333;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 10px;
+  color: white;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -249,8 +290,10 @@ button:focus-visible {
     width:220px!important;
     padding: 0!important;
   }
-  .debug-hud {
-    display: none;
+
+  .date-arrows {
+    left: 0;
+    bottom: -85px;
   }
 
   .pan-label {
@@ -258,7 +301,6 @@ button:focus-visible {
     left: 0 !important;
   }
 }
-
 
 @keyframes smooth-appear {
   to{

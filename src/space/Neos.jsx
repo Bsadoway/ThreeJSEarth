@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Cloud, Clouds } from '@react-three/drei';
+import { Cloud, Clouds, Html } from '@react-three/drei';
 import Asteroid from './Asteroid';
 import * as THREE from 'three';
 import params from '../utils/UniverseParams';
 import toast from 'react-hot-toast';
+import LoadingOverlay from '../utils/LoadingOverlay';
 
 const NEOS = React.memo(({ astronomicalConversion, date, cameraControls }) => {
     const [neos, setNEOs] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true); // Set loading to true before fetching
             try {
                 const formattedDate = date.toLocaleDateString();
                 const response = await fetch(`http://localhost:3000/api/neo?date=${formattedDate}`);
@@ -24,14 +27,21 @@ const NEOS = React.memo(({ astronomicalConversion, date, cameraControls }) => {
                 }               
             } catch (error) {
                 console.error('Error fetching NEO data:', error);
+            } finally {
+                setLoading(false); // Set loading to false after fetching
             }
 
         };
         fetchData();
     }, [date]);
 
+    if (loading) {
+        return <LoadingOverlay/>
+    }
+
     return (
         <>
+        
             {neos.map((neo) => (
                 <group key={neo.id} 
                 position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical + params.AUOffset]}

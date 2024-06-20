@@ -41,12 +41,12 @@ const Scene = () => {
         enableDamping={true}
         dampingFactor={1.5}
         maxPolarAngle={Math.PI / 2} // Limit the camera from pointing below the horizon
-        minPolarAngle={0}            // Limit the camera from pointing above the horizon
+        minPolarAngle={0}           // Limit the camera from pointing above the horizon
         enableRotate={false}
         enablePan={false}
         maxDistance={400}
-        minDistance={20}
-        maxAzimuthAngle={Math.PI / -6}  // Limit the camera from rotating past this angle to the right
+        minDistance={10}
+        maxAzimuthAngle={Math.PI / -6} // Limit the camera from rotating past this angle to the right
         minAzimuthAngle={-Math.PI / 2} // Limit the camera from rotating past this angle to the left
         min
       />
