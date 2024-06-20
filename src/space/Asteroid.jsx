@@ -8,7 +8,7 @@ import { Float, Html, Outlines, useTexture } from "@react-three/drei";
 import OrbitLine from "./OrbitLine";
 import params from "../utils/UniverseParams";
 
-const Asteroid = React.memo(({ id, position, data }) => {
+const Asteroid = React.memo(({ id, position, data, cameraControlsRef }) => {
   const meshRef = useRef();
   const glowMeshRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
@@ -56,6 +56,8 @@ const Asteroid = React.memo(({ id, position, data }) => {
   const toggleVisibility = (event) => {
     event.stopPropagation();
     setIsSelected(!isSelected);
+    // Zoom into current NEO
+    cameraControlsRef.current?.fitToBox(meshRef.current, true);
   };
 
   useFrame(( {clock}) => {

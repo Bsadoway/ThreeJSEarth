@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DateHud from './DateHud';
 import NEOS from '../space/Neos';
 
-const Dashboard = ({astronomicalConversion}) => {
+const Dashboard = ({astronomicalConversion, cameraControls}) => {
   const [date, setDate] = useState(new Date());
 
   const handleDateChange = (newDate) => {
@@ -11,7 +11,7 @@ const Dashboard = ({astronomicalConversion}) => {
   return (
     <>
       <DateHud date={date} onDateChange={handleDateChange} setDate={setDate}/>
-      <NEOS date={date} astronomicalConversion={astronomicalConversion} />
+      <NEOS date={date} astronomicalConversion={astronomicalConversion} cameraControls={cameraControls} />
     </>
   );
 };

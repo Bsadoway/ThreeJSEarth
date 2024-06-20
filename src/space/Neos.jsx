@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import params from '../utils/UniverseParams';
 import toast from 'react-hot-toast';
 
-const NEOS = React.memo(({ astronomicalConversion, date }) => {
+const NEOS = React.memo(({ astronomicalConversion, date, cameraControls }) => {
     const [neos, setNEOs] = useState([]);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const NEOS = React.memo(({ astronomicalConversion, date }) => {
 
     return (
         <>
-            {neos.map((neo, index) => (
+            {neos.map((neo) => (
                 <group key={neo.id} 
                 position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical + params.AUOffset]}
                 >
@@ -41,7 +41,8 @@ const NEOS = React.memo(({ astronomicalConversion, date }) => {
                         id={neo.id}
                         args={[neo.estimated_diameter.kilometers.estimated_diameter_max * 4, 32, 32]}
                         data={neo}
-                        position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical + params.AUOffset]}>
+                        position={[0, 20, astronomicalConversion * neo.close_approach_data[0].miss_distance.astronomical + params.AUOffset]}
+                        cameraControlsRef={cameraControls}>
 
                     </Asteroid>
                     <Clouds material={THREE.MeshBasicMaterial}>

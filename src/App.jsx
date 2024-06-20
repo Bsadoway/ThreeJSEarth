@@ -31,7 +31,7 @@ const Scene = () => {
       <directionalLight castShadow position={params.sunPosition} shadow-mapSize={[1024, 1024]} color="#FFF" intensity={params.sunIntensity}>
         <orthographicCamera attach="shadow-camera" args={[-50, 10, 10, -10]} />
       </directionalLight>
-      <Dashboard astronomicalConversion={params.astronomicalConversion.value} />
+      <Dashboard astronomicalConversion={params.astronomicalConversion.value} cameraControls={cameraControlRef}/>
       <CreateSolarSystem earthSize={params.earthSize.value} astronomicalConversion={params.astronomicalConversion.value} earthSpeed={params.earthSpeedFactor} />
       <DebugHUD camera={cameraRef} cameraControls={cameraControlRef} defaultCameraPosition={params.defaultCameraPosition} />
       <SoftShadows samples={3} />
