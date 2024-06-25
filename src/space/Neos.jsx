@@ -23,6 +23,7 @@ const NEOS = React.memo(({ astronomicalConversion, date, cameraControls }) => {
                 } else {
                     toast.error("Error finding Neo data, please refresh or try another browser");
                     toast.error("No NEO data available for " + date);
+                    setNEOs([]);
 
                 }               
             } catch (error) {

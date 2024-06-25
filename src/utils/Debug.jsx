@@ -2,6 +2,7 @@ import { Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useState } from "react";
 import PanSceneControl from "./PanSceneControl";
+import Info from "./Info";
 
 const DebugHUD = ({ cameraControls }) => {
     const { camera, controls } = useThree();
@@ -45,6 +46,7 @@ const DebugHUD = ({ cameraControls }) => {
     return (
         <>
             {/* <PanSceneControl onUpdateCamera={updateCameraPosition} cameraPosition={cameraPosition} /> */}
+            <Info></Info>
             <Html wrapperClass="hud-transform-unset debug-hud">
                 <div style={style}>
                     <div>Camera Rotation:</div>
