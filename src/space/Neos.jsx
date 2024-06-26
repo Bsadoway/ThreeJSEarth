@@ -9,14 +9,15 @@ import LoadingOverlay from '../utils/LoadingOverlay';
 const NEOS = React.memo(({ astronomicalConversion, date, cameraControls }) => {
     const [neos, setNEOs] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const ip = import.meta.env.VITE_API_URL;
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true); // Set loading to true before fetching
             try {
-                const formattedDate = date.toLocaleDateString();
-                const response = await fetch(`${import.meta.env.VITE_API_URL}:3000/api/neo?date=${formattedDate}`);
+                const formattedDate = date.toISOString().replace(/T.*/,'').split('-').join('-');
+                const response = await fetch(`http://137.184.6.122:3000/api/neo?date=${formattedDate}`); // ref
                 const data = await response.json();
+                console.log(formattedDate)
                 if (data[formattedDate]) {
                     setNEOs(data[formattedDate]);
                     console.log("Fetched neos for " + formattedDate);
