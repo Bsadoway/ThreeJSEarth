@@ -15,7 +15,7 @@ const NEOS = React.memo(({ astronomicalConversion, date, cameraControls }) => {
             setLoading(true); // Set loading to true before fetching
             try {
                 const formattedDate = date.toLocaleDateString();
-                const response = await fetch(`http://localhost:3000/api/neo?date=${formattedDate}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}:3000/api/neo?date=${formattedDate}`);
                 const data = await response.json();
                 if (data[formattedDate]) {
                     setNEOs(data[formattedDate]);
